@@ -41,8 +41,8 @@ class JobController extends Controller
         try {
             $request['id'] = $id;
             $request->validate(['id' => 'required|exists:jobs,id,deleted_at,NULL']);
-
             $jobs = $this->job->find($id);
+
             return response()->json([
                 'status' => true,
                 "errNum" => "S000",

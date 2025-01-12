@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Job;
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -24,7 +23,6 @@ class DatabaseSeeder extends Seeder
             'username' => 'Admin Login',
             'gmail' => 'Admin@gmail.com',
             'password' => Hash::make('admin'),
-            'role' => Role::ADMIN,
         ]);
 
 
@@ -33,12 +31,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'Customer',
             'gmail' => 'customer@gmail.com',
             'password' => Hash::make('customer'),
-            'role' => Role::CUSTOMER,
         ]);
 
         // ? todo add user admin //
         $admins = User::factory()
-            ->admin()
             ->count(4)
             ->create();
         $admins->push($defAdmin);
@@ -46,7 +42,6 @@ class DatabaseSeeder extends Seeder
 
         // ? todo add user customer //
         $customer = User::factory()
-            ->customer()
             ->count(19)
             ->create();
         $customer->push($defCustomer);

@@ -21,7 +21,7 @@ class JobRepository
 
     public function find($id)
     {
-        return $this->job->find($id);
+        return $this->job->findOrFail($id);
     }
 
     public function create(array $data)
@@ -31,17 +31,17 @@ class JobRepository
 
     public function update(array $data, $id)
     {
-        return $this->job->find($id)->update($data);
+        return $this->job->findOrFail($id)->update($data);
     }
 
     public function delete($id)
     {
-        return $this->job->find($id)->delete();
+        return $this->job->findOrFail($id)->delete();
     }
 
     public function deleteForce($id)
     {
-        return $this->job->find($id)->forceDelete();
+        return $this->job->findOrFail($id)->forceDelete();
     }
 
     public function Fillter($data)
@@ -57,7 +57,7 @@ class JobRepository
 
     public function restore($id)
     {
-        $jobs = $this->job->withTrashed()->find($id);
+        $jobs = $this->job->withTrashed()->findOrFail($id);
         $jobs->restore();
         return $jobs->title;
     }

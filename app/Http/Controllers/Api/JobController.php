@@ -29,9 +29,9 @@ class JobController extends Controller
                 "errNum" => "S000",
                 "msg" => "success",
                 "data" => $jobs
-            ]);
+            ], 200);
         } catch (Exception $e) {
-            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()]);
+            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()], $e->getCode());
         }
 
     }
@@ -48,15 +48,15 @@ class JobController extends Controller
                 "errNum" => "S000",
                 "msg" => "success",
                 "data" => $jobs
-            ]);
+            ], 200);
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
                 'errNum' => 'V000',
                 'errors' => $e->errors()
-            ]);
+            ], $e->getCode());
         } catch (Exception $e) {
-            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()]);
+            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()], $e->getCode());
         }
     }
 
@@ -76,16 +76,16 @@ class JobController extends Controller
                 "status" => true,
                 "errNum" => "S000",
                 "message" => "Job created successfully."
-            ]);
+            ], 200);
 
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
                 'errNum' => 'V000',
                 'errors' => $e->errors()
-            ]);
+            ], 422);
         } catch (Exception $e) {
-            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()]);
+            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()], $e->getCode());
         }
     }
 
@@ -108,15 +108,15 @@ class JobController extends Controller
                 "status" => true,
                 "errNum" => "S000",
                 "message" => "Job updated successfully."
-            ]);
+            ], 200);
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
                 'errNum' => 'V000',
                 'errors' => $e->errors()
-            ]);
+            ], 422);
         } catch (Exception $e) {
-            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()]);
+            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()], $e->getCode());
         }
     }
 
@@ -127,15 +127,19 @@ class JobController extends Controller
                 'search' => 'required',
             ]);
             $data = $this->job->Fillter($validated['search']);
-            return response()->json($data);
+            return response()->json([
+                "status" => true,
+                "errNum" => "S000",
+                'data' => $data
+            ], 200);
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
                 'errNum' => 'V000',
                 'errors' => $e->errors()
-            ]);
+            ], 422);
         } catch (Exception $e) {
-            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()]);
+            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()], $e->getCode());
         }
     }
 
@@ -145,20 +149,20 @@ class JobController extends Controller
 
             $request['id'] = $id;
             $request->validate(['id' => 'required|exists:jobs,id,deleted_at,NULL']);
-
+            $this->job->delete($id);
             return response()->json([
                 "status" => true,
                 "errNum" => "S000",
                 "message" => "Job Deleted successfully."
-            ]);
+            ], 200);
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
                 'errNum' => 'V000',
                 'errors' => $e->errors()
-            ]);
+            ], 422);
         } catch (Exception $e) {
-            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()]);
+            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()], $e->getCode());
         }
     }
 
@@ -175,16 +179,16 @@ class JobController extends Controller
                 "status" => true,
                 "errNum" => "S000",
                 "message" => "Job Deleted force successfully."
-            ]);
+            ], 200);
 
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
                 'errNum' => 'V000',
                 'errors' => $e->errors()
-            ]);
+            ], 422);
         } catch (Exception $e) {
-            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()]);
+            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()], $e->getCode());
         }
     }
 
@@ -197,9 +201,9 @@ class JobController extends Controller
                 "status" => true,
                 "errNum" => "S000",
                 "data" => $jobs
-            ]);
+            ], 200);
         } catch (Exception $e) {
-            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()]);
+            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()], $e->getCode());
         }
     }
 
@@ -216,15 +220,15 @@ class JobController extends Controller
                 "status" => true,
                 "errNum" => "S000",
                 "message" => "Job : " . $jobs . " , Restore successfully."
-            ]);
+            ], 200);
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => false,
                 'errNum' => 'V000',
                 'errors' => $e->errors()
-            ]);
+            ], 422);
         } catch (Exception $e) {
-            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()]);
+            return response()->json(['status' => false, "errNum" => $e->getCode(), "msg" => "error , " . $e->getMessage()], $e->getCode());
         }
     }
 

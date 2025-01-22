@@ -51,7 +51,7 @@ class JobRepository
 
     public function restoreIndex()
     {
-        return $this->job->findOrFail()->paginate(10);
+        return $this->job->onlyTrashed()->paginate(10);
     }
 
 
